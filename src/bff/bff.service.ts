@@ -12,6 +12,8 @@ export interface FeedFilters {
   dateTo?: string;
   page?: number;
   limit?: number;
+  userId?: string;
+  votedOnly?: boolean;
 }
 
 @Injectable()
@@ -40,6 +42,40 @@ export class BffService {
     return firstValueFrom(
       this.backendClient
         .send('initiatives.findAll', filters)
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  getDetail(id: string) {
+    this.logger.log(`[getDetail] id=${id}`);
+    return firstValueFrom(
+      this.backendClient
+        .send('initiatives.findOne', { id })
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  castVote(dto: { userId: string; initiativeId: string; choice: string }) {
+    this.logger.log(
+      `[castVote] user=${dto.userId} initiative=${dto.initiativeId}`,
+    );
+    return firstValueFrom(
+      this.backendClient.send('votes.cast', dto).pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  getUserVote(data: { userId: string; initiativeId: string }) {
+    return firstValueFrom(
+      this.backendClient
+        .send('votes.getByUser', data)
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  getVoteStats(initiativeId: string) {
+    return firstValueFrom(
+      this.backendClient
+        .send('votes.getStats', { initiativeId })
         .pipe(timeout(RPC_TIMEOUT_MS)),
     );
   }
