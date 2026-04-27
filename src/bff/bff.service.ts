@@ -79,4 +79,28 @@ export class BffService {
         .pipe(timeout(RPC_TIMEOUT_MS)),
     );
   }
+
+  toggleFollow(userId: string, initiativeId: string) {
+    return firstValueFrom(
+      this.backendClient
+        .send('follows.toggle', { userId, initiativeId })
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  isFollowing(userId: string, initiativeId: string) {
+    return firstValueFrom(
+      this.backendClient
+        .send('follows.isFollowing', { userId, initiativeId })
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  getFollows(userId: string) {
+    return firstValueFrom(
+      this.backendClient
+        .send('follows.getByUser', { userId })
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
 }
