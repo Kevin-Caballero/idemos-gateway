@@ -66,4 +66,60 @@ describe('BffService', () => {
       expect(result).toEqual(populated);
     });
   });
+
+  describe('search', () => {
+    it('sends initiatives.findAll with q param', async () => {
+      backendClient.send.mockReturnValue(of(mockFeed));
+
+      const filters: FeedFilters = { q: 'presupuestos', page: 1, limit: 20 };
+      await service.search(filters);
+
+      expect(backendClient.send).toHaveBeenCalledWith(
+        'initiatives.findAll',
+        filters,
+      );
+    });
+
+    it('sends initiatives.findAll with q and type combined', async () => {
+      backendClient.send.mockReturnValue(of(mockFeed));
+
+      const filters: FeedFilters = {
+        q: 'ley',
+        type: InitiativeType.Proposicion,
+        page: 1,
+        limit: 20,
+      };
+      await service.search(filters);
+
+      expect(backendClient.send).toHaveBeenCalledWith(
+        'initiatives.findAll',
+        filters,
+      );
+    });
+
+    it('returns the paginated response from backend', async () => {
+      const populated = {
+        data: [{ id: 'uuid-1', title: 'Ley de test' }],
+        total: 1,
+        page: 1,
+        limit: 20,
+      };
+      backendClient.send.mockReturnValue(of(populated));
+
+      const result = await service.search({ q: 'ley' });
+
+      expect(result).toEqual(populated);
+    });
+
+    it('sends initiatives.findAll with empty filters when q is undefined', async () => {
+      backendClient.send.mockReturnValue(of(mockFeed));
+
+      await service.search({});
+
+      expect(backendClient.send).toHaveBeenCalledWith(
+        'initiatives.findAll',
+        {},
+      );
+    });
+  });
 });

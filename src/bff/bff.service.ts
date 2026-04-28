@@ -5,7 +5,11 @@ import { firstValueFrom, timeout } from 'rxjs';
 const RPC_TIMEOUT_MS = 8000;
 
 export interface FeedFilters {
+  q?: string;
   type?: string;
+  status?: string;
+  dateFrom?: string;
+  dateTo?: string;
   page?: number;
   limit?: number;
 }
@@ -21,6 +25,17 @@ export class BffService {
   aggregateFeed(filters: FeedFilters) {
     this.logger.log(
       `[aggregateFeed] type=${filters.type ?? 'all'} page=${filters.page ?? 1}`,
+    );
+    return firstValueFrom(
+      this.backendClient
+        .send('initiatives.findAll', filters)
+        .pipe(timeout(RPC_TIMEOUT_MS)),
+    );
+  }
+
+  search(filters: FeedFilters) {
+    this.logger.log(
+      `[search] q=${filters.q ?? ''} type=${filters.type ?? 'all'} status=${filters.status ?? ''} page=${filters.page ?? 1}`,
     );
     return firstValueFrom(
       this.backendClient
