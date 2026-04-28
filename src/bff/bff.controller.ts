@@ -1,12 +1,27 @@
-import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthProxyGuard } from '../auth/guards/auth-proxy.guard';
 import { BffService } from './bff.service';
+
+interface AuthedRequest {
+  user: { sub: string };
+}
 
 @ApiTags('feed')
 @ApiBearerAuth()
@@ -30,12 +45,14 @@ export class BffController {
     @Query('type') type?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Req() req?: AuthedRequest,
   ) {
     this.logger.log(`[GET /feed] type=${type} page=${page} limit=${limit}`);
     return this.bffService.aggregateFeed({
       type,
       page: page ? Number(page) : undefined,
       limit: limit ? Number(limit) : undefined,
+      userId: req?.user?.sub,
     });
   }
 
@@ -51,6 +68,7 @@ export class BffController {
   @ApiQuery({ name: 'dateTo', required: false, type: String })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({ name: 'votedOnly', required: false, type: Boolean })
   @Get('search')
   getSearch(
     @Query('q') q?: string,
@@ -60,9 +78,11 @@ export class BffController {
     @Query('dateTo') dateTo?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('votedOnly') votedOnly?: string,
+    @Req() req?: AuthedRequest,
   ) {
     this.logger.log(
-      `[GET /search] q=${q} type=${type} status=${status} page=${page} limit=${limit}`,
+      `[GET /search] q=${q} type=${type} status=${status} page=${page} limit=${limit} votedOnly=${votedOnly}`,
     );
     return this.bffService.search({
       q,
@@ -72,6 +92,46 @@ export class BffController {
       dateTo,
       page: page ? Number(page) : undefined,
       limit: limit ? Number(limit) : undefined,
+      userId: req?.user?.sub,
+      votedOnly: votedOnly === 'true',
     });
+  }
+
+  @ApiOperation({ summary: 'Obtener detalle de una iniciativa por ID' })
+  @ApiParam({ name: 'id', description: 'UUID de la iniciativa' })
+  @Get('initiatives/:id')
+  getInitiativeDetail(@Param('id') id: string) {
+    this.logger.log(`[GET /initiatives/${id}]`);
+    return this.bffService.getDetail(id);
+  }
+
+  @ApiOperation({ summary: 'Registrar voto ciudadano en una iniciativa' })
+  @ApiParam({ name: 'id', description: 'UUID de la iniciativa' })
+  @Post('initiatives/:id/vote')
+  castVote(
+    @Param('id') initiativeId: string,
+    @Body('choice') choice: string,
+    @Req() req: AuthedRequest,
+  ) {
+    const userId = req.user.sub;
+    this.logger.log(
+      `[POST /initiatives/${initiativeId}/vote] user=${userId} choice=${choice}`,
+    );
+    return this.bffService.castVote({ userId, initiativeId, choice });
+  }
+
+  @ApiOperation({ summary: 'Obtener el voto del usuario en una iniciativa' })
+  @ApiParam({ name: 'id', description: 'UUID de la iniciativa' })
+  @Get('initiatives/:id/vote')
+  getUserVote(@Param('id') initiativeId: string, @Req() req: AuthedRequest) {
+    const userId = req.user.sub;
+    return this.bffService.getUserVote({ userId, initiativeId });
+  }
+
+  @ApiOperation({ summary: 'Obtener estadísticas de votos de una iniciativa' })
+  @ApiParam({ name: 'id', description: 'UUID de la iniciativa' })
+  @Get('initiatives/:id/vote/stats')
+  getVoteStats(@Param('id') initiativeId: string) {
+    return this.bffService.getVoteStats(initiativeId);
   }
 }
