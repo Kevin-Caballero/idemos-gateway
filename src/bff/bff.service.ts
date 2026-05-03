@@ -16,6 +16,13 @@ export interface FeedFilters {
   votedOnly?: boolean;
 }
 
+/**
+ * Servicio BFF (Backend for Frontend) del gateway.
+ * Agrega y reenvía al microservicio backend todas las operaciones que necesita
+ * la aplicación móvil: feed, búsqueda, detalle de iniciativas, votación y seguimiento.
+ * Aplica un timeout de 8 segundos en cada llamada RPC para que los errores de red
+ * no queden pendientes indefinidamente.
+ */
 @Injectable()
 export class BffService {
   private readonly logger = new Logger(BffService.name);

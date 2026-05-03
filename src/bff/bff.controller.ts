@@ -23,6 +23,13 @@ interface AuthedRequest {
   user: { sub: string };
 }
 
+/**
+ * Controlador HTTP REST del gateway orientado al frontend (BFF).
+ * Todos los endpoints requieren un JWT válido (AuthProxyGuard) y exponen
+ * el ID del usuario autenticado al servicio a través de `req.user.sub`.
+ * El diseño BFF permite que el gateway adapte las respuestas del backend
+ * al contrato que necesita la app sin modificar el microservicio core.
+ */
 @ApiTags('feed')
 @ApiBearerAuth()
 @UseGuards(AuthProxyGuard)

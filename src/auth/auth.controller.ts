@@ -12,6 +12,11 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { RegisterDto } from './dto/register.dto';
 
+/**
+ * Controlador HTTP REST del gateway para las operaciones de autenticación.
+ * Actúa como proxy HTTP→RPC: recibe peticiones REST del cliente móvil
+ * y las reenvía al microservicio auth mediante TCP.
+ */
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

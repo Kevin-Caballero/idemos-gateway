@@ -7,6 +7,11 @@ import { RegisterDto } from './dto/register.dto';
 
 const RPC_TIMEOUT_MS = 8000;
 
+/**
+ * Servicio proxy de autenticación en el gateway.
+ * Encapsula el reenvío de llamadas RPC al microservicio auth aplicando
+ * un timeout configurable para evitar que peticiones colgadas bloqueen el gateway.
+ */
 @Injectable()
 export class AuthProxyService {
   private readonly logger = new Logger(AuthProxyService.name);
