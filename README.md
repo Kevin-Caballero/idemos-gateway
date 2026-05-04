@@ -9,7 +9,7 @@ Puerta de entrada HTTP de iDemos. Actúa como API Gateway y BFF (Backend for Fro
 
 ## Comunicación
 
-Expone la API HTTP en el puerto `PORT` (por defecto 3000). También escucha en la cola `gateway_queue` (RabbitMQ). Se comunica con Auth, Backend, AI y ETL a través de sus colas.
+Expone la API HTTP en el puerto `PORT` (por defecto 3100). También escucha en la cola `gateway_queue` (RabbitMQ). Se comunica con Auth, Backend, AI y ETL a través de sus colas.
 
 La documentación Swagger está disponible en `/api`.
 
@@ -17,7 +17,7 @@ La documentación Swagger está disponible en `/api`.
 
 | Variable       | Por defecto             | Descripción                |
 | -------------- | ----------------------- | -------------------------- |
-| `PORT`         | `3000`                  | Puerto HTTP del servicio   |
+| `PORT`         | `3100`                  | Puerto HTTP del servicio   |
 | `JWT_SECRET`   | `secret`                | Secreto para validar JWTs  |
 | `RABBITMQ_URL` | `amqp://localhost:5672` | URL de conexión a RabbitMQ |
 | `NODE_ENV`     | —                       | Entorno de ejecución       |
