@@ -76,6 +76,7 @@ export class BffController {
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'votedOnly', required: false, type: Boolean })
+  @ApiQuery({ name: 'hasOfficialVote', required: false, type: Boolean })
   @Get('search')
   getSearch(
     @Query('q') q?: string,
@@ -86,10 +87,11 @@ export class BffController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('votedOnly') votedOnly?: string,
+    @Query('hasOfficialVote') hasOfficialVote?: string,
     @Req() req?: AuthedRequest,
   ) {
     this.logger.log(
-      `[GET /search] q=${q} type=${type} status=${status} page=${page} limit=${limit} votedOnly=${votedOnly}`,
+      `[GET /search] q=${q} type=${type} status=${status} page=${page} limit=${limit} votedOnly=${votedOnly} hasOfficialVote=${hasOfficialVote}`,
     );
     return this.bffService.search({
       q,
@@ -101,6 +103,7 @@ export class BffController {
       limit: limit ? Number(limit) : undefined,
       userId: req?.user?.sub,
       votedOnly: votedOnly === 'true',
+      hasOfficialVote: hasOfficialVote === 'true',
     });
   }
 

@@ -13,7 +13,7 @@ import { AuthProxyGuard } from './guards/auth-proxy.guard';
         name: 'AUTH_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'auth_queue',
           queueOptions: { durable: true },
         },

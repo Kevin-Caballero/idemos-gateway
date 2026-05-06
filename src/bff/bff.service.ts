@@ -14,6 +14,7 @@ export interface FeedFilters {
   limit?: number;
   userId?: string;
   votedOnly?: boolean;
+  hasOfficialVote?: boolean;
 }
 
 /**

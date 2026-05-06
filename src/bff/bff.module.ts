@@ -12,7 +12,7 @@ import { BffService } from './bff.service';
         name: 'BACKEND_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'backend_queue',
           queueOptions: { durable: true },
         },

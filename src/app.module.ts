@@ -14,7 +14,7 @@ import { AppService } from './app.service';
         name: 'AUTH_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'auth_queue',
           queueOptions: { durable: true },
         },
@@ -23,7 +23,7 @@ import { AppService } from './app.service';
         name: 'BACKEND_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'backend_queue',
           queueOptions: { durable: true },
         },
@@ -32,7 +32,7 @@ import { AppService } from './app.service';
         name: 'AI_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'ai_queue',
           queueOptions: { durable: true },
         },
@@ -41,7 +41,7 @@ import { AppService } from './app.service';
         name: 'ETL_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URL ?? 'amqp://localhost:15672'],
           queue: 'etl_queue',
           queueOptions: { durable: true },
         },
