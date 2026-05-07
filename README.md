@@ -22,7 +22,7 @@ La documentación Swagger está disponible en `/api`.
 | `RABBITMQ_URL` | `amqp://localhost:5672` | URL de conexión a RabbitMQ |
 | `NODE_ENV`     | —                       | Entorno de ejecución       |
 
-## Required versions
+## Requisitos
 
 | Tool / Package          | Version |
 | ----------------------- | ------- |
@@ -36,7 +36,7 @@ La documentación Swagger está disponible en `/api`.
 | `@nestjs/microservices` | ^11.0.1 |
 | RxJS                    | ^7.8.1  |
 
-> Node.js 20+ is required for native `.env` file loading via `--env-file`.
+> Se requiere Node.js 20+ para la carga nativa de archivos `.env` mediante `--env-file`.
 
 ## Scripts
 
