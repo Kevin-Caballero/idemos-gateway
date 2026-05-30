@@ -9,7 +9,7 @@ Puerta de entrada HTTP de iDemos. Actúa como API Gateway y BFF (Backend for Fro
 
 ## Comunicación
 
-Expone la API HTTP en el puerto `PORT` (por defecto 3100). También escucha en la cola `gateway_queue` (RabbitMQ). Se comunica con Auth, Backend, AI y ETL a través de sus colas.
+Expone la API HTTP en el puerto `PORT` (por defecto 3100). Se comunica con Auth, Backend, AI y ETL a través de sus colas RabbitMQ.
 
 La documentación Swagger está disponible en `/api`.
 
